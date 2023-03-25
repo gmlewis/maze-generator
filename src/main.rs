@@ -1,3 +1,7 @@
+use maze::rectangular::Rectangular;
+pub mod maze;
+
 fn main() {
-    println!("Hello, world!");
+    let maze = Rectangular::new(20, 10);
+    println!("{maze}");
 }
