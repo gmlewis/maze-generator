@@ -13,7 +13,7 @@ pub struct Rectangular {
 }
 
 impl Rectangular {
-    pub fn new(cols: i32, rows: i32, seed: u64) -> Rectangular {
+    fn new(cols: i32, rows: i32, seed: u64) -> Rectangular {
         let rng = rand_chacha::ChaCha8Rng::seed_from_u64(seed);
         let map = gen_grid(cols, rows);
         Rectangular {
@@ -24,10 +24,16 @@ impl Rectangular {
         }
     }
 
-    pub fn random_cell(&mut self) -> &GridCell {
+    pub fn build(cols: i32, rows: i32, seed: u64) -> Rectangular {
+        let mut r = Self::new(cols, rows, seed);
+        let cell = r.random_cell();
+        println!("random cell={cell}");
+        r
+    }
+
+    fn random_cell(&mut self) -> &GridCell {
         let y = self.rng.gen_range(0..self.rows);
         let x = self.rng.gen_range(0..self.cols);
-        println!("random_cell: x={x}, y={y}");
         let key = Point { x, y };
         self.map.get(&key).unwrap()
     }

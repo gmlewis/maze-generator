@@ -11,8 +11,6 @@ fn main() {
         .duration_since(SystemTime::UNIX_EPOCH)
         .expect("get millis error");
     let seed = now.as_millis() as u64;
-    let mut maze = Rectangular::new(20, 5, seed);
+    let maze = Rectangular::build(20, 5, seed);
     println!("{maze}");
-    let rc = maze.random_cell();
-    println!("{rc}")
 }
