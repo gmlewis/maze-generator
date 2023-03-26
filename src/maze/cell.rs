@@ -30,7 +30,7 @@ impl GridCell {
 
     pub fn east(&self) -> Option<&GridCell> {
         let k = Point {
-            x: self.key.x - 1,
+            x: self.key.x + 1,
             y: self.key.y,
         };
         self.links.get(&k)
@@ -38,7 +38,7 @@ impl GridCell {
 
     pub fn west(&self) -> Option<&GridCell> {
         let k = Point {
-            x: self.key.x + 1,
+            x: self.key.x - 1,
             y: self.key.y,
         };
         self.links.get(&k)
