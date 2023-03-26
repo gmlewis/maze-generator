@@ -1,4 +1,7 @@
-use maze::rectangular::Rectangular;
+//! maze-generator generates a variety of mazes in the browser
+//! via WebAssembly.
+
+use maze::Rectangular;
 pub mod maze;
 
 fn main() {
