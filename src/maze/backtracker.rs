@@ -1,3 +1,4 @@
+use crate::maze::stack::Stack;
 use rand::Rng;
 use rand_chacha::ChaCha8Rng;
 
@@ -8,10 +9,14 @@ trait MazeCell<T> {
 }
 
 pub fn backtracker<T: MazeCell<T>>(start: &mut T, rng: &mut ChaCha8Rng) {
-    let mut stack = vec![start];
+    let mut stack = Stack::new();
+    stack.push(start);
 
-    while stack.len() > 0 {
-        let current = stack.last().unwrap();
+    loop {
+        let current = match stack.peek() {
+            Some(v) => v,
+            None => return,
+        };
         let unlinked_neighbors: Vec<&mut T> = current
             .neighbors()
             .into_iter()
