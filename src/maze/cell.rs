@@ -1,5 +1,6 @@
 use rusttype::Point;
 use std::collections::HashMap;
+use std::fmt;
 
 pub struct GridCell {
     key: Point<i32>,
@@ -47,5 +48,11 @@ impl GridCell {
     pub fn neighbors(&self) -> Vec<&GridCell> {
         let dirs = vec![self.north(), self.south(), self.east(), self.west()];
         dirs.into_iter().flatten().collect()
+    }
+}
+
+impl fmt::Display for GridCell {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        writeln!(f, "GridCell({}, {})", self.key.x, self.key.y)
     }
 }

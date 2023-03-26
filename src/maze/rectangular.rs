@@ -1,4 +1,5 @@
 use crate::maze::cell::GridCell;
+use rand::Rng;
 use rand::SeedableRng;
 use rand_chacha::ChaCha8Rng;
 use rusttype::Point;
@@ -21,6 +22,14 @@ impl Rectangular {
             rng,
             map,
         }
+    }
+
+    pub fn random_cell(&mut self) -> &GridCell {
+        let y = self.rng.gen_range(0..self.rows);
+        let x = self.rng.gen_range(0..self.cols);
+        println!("random_cell: x={x}, y={y}");
+        let key = Point { x, y };
+        self.map.get(&key).unwrap()
     }
 }
 
