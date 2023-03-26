@@ -2,17 +2,17 @@ use rand::Rng;
 use rand_chacha::ChaCha8Rng;
 
 trait MazeCell<T> {
-    fn neighbors(&self) -> Vec<&T>;
+    fn neighbors(&self) -> Vec<&mut T>;
     fn num_links(&self) -> i32;
     fn link(&mut self, other: &T);
 }
 
-pub fn backtracker<T: MazeCell<T>>(start: &T, rng: &mut ChaCha8Rng) {
-    let mut stack: Vec<&T> = vec![start];
+pub fn backtracker<T: MazeCell<T>>(start: &mut T, rng: &mut ChaCha8Rng) {
+    let mut stack = vec![start];
 
     while stack.len() > 0 {
         let current = stack.last().unwrap();
-        let unlinked_neighbors: Vec<&T> = current
+        let unlinked_neighbors: Vec<&mut T> = current
             .neighbors()
             .into_iter()
             .filter(|cell| cell.num_links() == 0)
