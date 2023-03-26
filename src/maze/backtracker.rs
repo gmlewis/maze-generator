@@ -3,7 +3,7 @@ use rand::Rng;
 use rand_chacha::ChaCha8Rng;
 
 trait MazeCell<T> {
-    fn neighbors(&self) -> Vec<&mut T>;
+    fn neighbors(&self) -> Vec<&T>;
     fn num_links(&self) -> i32;
     fn link(&mut self, other: &T);
 }
@@ -19,7 +19,7 @@ pub fn backtracker<T: MazeCell<T>>(start: &mut T, rng: &mut ChaCha8Rng) {
         };
         let unlinked_neighbors: Vec<&mut T> = current
             .neighbors()
-            .into_iter()
+            .iter_mut()
             .filter(|cell| cell.num_links() == 0)
             .collect();
 
