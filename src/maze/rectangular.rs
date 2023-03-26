@@ -1,17 +1,14 @@
+use crate::maze::cell::Cell;
 use rand::SeedableRng;
 use rand_chacha::ChaCha8Rng;
 use rusttype::Point;
 use std::{collections::HashMap, fmt};
 
-struct GridCell {
-    links: HashMap<Point<i32>, GridCell>,
-}
-
 pub struct Rectangular {
     width: i32,
     height: i32,
     rng: ChaCha8Rng,
-    map: HashMap<Point<i32>, GridCell>,
+    map: HashMap<Point<i32>, Cell>,
 }
 
 impl Rectangular {
@@ -27,16 +24,11 @@ impl Rectangular {
     }
 }
 
-fn gen_grid(width: i32, height: i32) -> HashMap<Point<i32>, GridCell> {
+fn gen_grid(width: i32, height: i32) -> HashMap<Point<i32>, Cell> {
     let mut map = HashMap::new();
     for y in 0..height {
         for x in 0..width {
-            map.insert(
-                Point { x, y },
-                GridCell {
-                    links: HashMap::new(),
-                },
-            );
+            map.insert(Point { x, y }, Cell::new());
         }
     }
     map
