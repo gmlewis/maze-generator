@@ -19,7 +19,7 @@ pub fn backtracker<T: MazeCell<T>>(start: &mut T, rng: &mut ChaCha8Rng) {
         };
         let unlinked_neighbors: Vec<&mut T> = current
             .neighbors()
-            .iter_mut()
+            .into_iter()
             .filter(|cell| cell.num_links() == 0)
             .collect();
 
