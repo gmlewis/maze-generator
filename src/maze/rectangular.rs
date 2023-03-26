@@ -5,29 +5,29 @@ use rusttype::Point;
 use std::{collections::HashMap, fmt};
 
 pub struct Rectangular {
-    width: i32,
-    height: i32,
+    cols: i32,
+    rows: i32,
     rng: ChaCha8Rng,
     map: HashMap<Point<i32>, GridCell>,
 }
 
 impl Rectangular {
-    pub fn new(width: i32, height: i32, seed: u64) -> Rectangular {
+    pub fn new(cols: i32, rows: i32, seed: u64) -> Rectangular {
         let rng = rand_chacha::ChaCha8Rng::seed_from_u64(seed);
-        let map = gen_grid(width, height);
+        let map = gen_grid(cols, rows);
         Rectangular {
-            width,
-            height,
+            cols,
+            rows,
             rng,
             map,
         }
     }
 }
 
-fn gen_grid(width: i32, height: i32) -> HashMap<Point<i32>, GridCell> {
+fn gen_grid(cols: i32, rows: i32) -> HashMap<Point<i32>, GridCell> {
     let mut map = HashMap::new();
-    for y in 0..height {
-        for x in 0..width {
+    for y in 0..rows {
+        for x in 0..cols {
             let k = Point { x, y };
             map.insert(k, GridCell::new(k));
         }
@@ -37,6 +37,8 @@ fn gen_grid(width: i32, height: i32) -> HashMap<Point<i32>, GridCell> {
 
 impl fmt::Display for Rectangular {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        writeln!(f, "Rectangular({} x {})", self.width, self.height)
+        writeln!(f, "Rectangular({} x {})", self.cols, self.rows)?;
+        write!(f, "+")?;
+        writeln!(f, "{}", "---+".repeat(self.cols.try_into().unwrap()))
     }
 }
