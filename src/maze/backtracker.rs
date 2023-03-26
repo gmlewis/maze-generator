@@ -14,7 +14,7 @@ pub fn backtracker<T: MazeCell<T>>(start: &T, rng: &mut ChaCha8Rng) {
         let current = stack.last().unwrap();
         let unlinked_neighbors: Vec<&T> = current
             .neighbors()
-            .iter()
+            .into_iter()
             .filter(|cell| cell.num_links() == 0)
             .collect();
 
