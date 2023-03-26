@@ -13,6 +13,10 @@ impl GridCell {
         GridCell { key, links }
     }
 
+    pub fn key(&self) -> Point<i32> {
+        self.key
+    }
+
     pub fn north(&self) -> Option<&GridCell> {
         let k = Point {
             x: self.key.x,
@@ -48,6 +52,10 @@ impl GridCell {
     pub fn neighbors(&self) -> Vec<&GridCell> {
         let dirs = vec![self.north(), self.south(), self.east(), self.west()];
         dirs.into_iter().flatten().collect()
+    }
+
+    pub fn link(&mut self, other: GridCell) {
+        self.links.insert(other.key(), other);
     }
 }
 
