@@ -2,13 +2,13 @@ use rusttype::Point;
 use std::collections::HashMap;
 use std::fmt;
 
-pub struct GridCell {
+pub struct GridCell<'a> {
     key: Point<i32>,
-    links: HashMap<Point<i32>, GridCell>,
+    links: HashMap<Point<i32>, &'a GridCell<'a>>,
 }
 
-impl GridCell {
-    pub fn new(key: Point<i32>) -> GridCell {
+impl<'a> GridCell<'a> {
+    pub fn new(key: Point<i32>) -> GridCell<'a> {
         let links = HashMap::new();
         GridCell { key, links }
     }
@@ -17,12 +17,12 @@ impl GridCell {
         self.key
     }
 
-    pub fn north(&self) -> Option<&GridCell> {
+    pub fn north(&self) -> Option<&GridCell<'a>> {
         let k = Point {
             x: self.key.x,
             y: self.key.y - 1,
         };
-        self.links.get(&k)
+        self.links.get(&k).copied()
     }
 
     pub fn south(&self) -> Option<&GridCell> {
@@ -30,7 +30,7 @@ impl GridCell {
             x: self.key.x,
             y: self.key.y + 1,
         };
-        self.links.get(&k)
+        self.links.get(&k).copied()
     }
 
     pub fn east(&self) -> Option<&GridCell> {
@@ -38,7 +38,7 @@ impl GridCell {
             x: self.key.x + 1,
             y: self.key.y,
         };
-        self.links.get(&k)
+        self.links.get(&k).copied()
     }
 
     pub fn west(&self) -> Option<&GridCell> {
@@ -46,7 +46,7 @@ impl GridCell {
             x: self.key.x - 1,
             y: self.key.y,
         };
-        self.links.get(&k)
+        self.links.get(&k).copied()
     }
 
     pub fn neighbors(&self) -> Vec<&GridCell> {
@@ -54,12 +54,12 @@ impl GridCell {
         dirs.into_iter().flatten().collect()
     }
 
-    pub fn link(&mut self, other: GridCell) {
+    pub fn link(&mut self, other: &'a GridCell<'a>) {
         self.links.insert(other.key(), other);
     }
 }
 
-impl fmt::Display for GridCell {
+impl<'a> fmt::Display for GridCell<'a> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         writeln!(f, "GridCell({}, {})", self.key.x, self.key.y)
     }

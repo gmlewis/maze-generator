@@ -25,8 +25,8 @@ pub fn backtracker<T: MazeCell<T>>(start: &T, rng: &mut ChaCha8Rng) {
 
         let index = rng.gen_range(0..unlinked_neighbors.len());
         let neighbor = unlinked_neighbors[index];
-        current.link(&neighbor);
-        neighbor.link(&current);
+        current.link(neighbor);
+        neighbor.link(current);
         stack.push(neighbor);
     }
 }

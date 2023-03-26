@@ -5,15 +5,15 @@ use rand_chacha::ChaCha8Rng;
 use rusttype::Point;
 use std::{collections::HashMap, fmt};
 
-pub struct Rectangular {
+pub struct Rectangular<'a> {
     cols: i32,
     rows: i32,
     rng: ChaCha8Rng,
-    map: HashMap<Point<i32>, GridCell>,
+    map: HashMap<Point<i32>, GridCell<'a>>,
 }
 
-impl Rectangular {
-    fn new(cols: i32, rows: i32, seed: u64) -> Rectangular {
+impl<'a> Rectangular<'a> {
+    fn new(cols: i32, rows: i32, seed: u64) -> Rectangular<'a> {
         let rng = rand_chacha::ChaCha8Rng::seed_from_u64(seed);
         let map = gen_grid(cols, rows);
         Rectangular {
@@ -24,7 +24,7 @@ impl Rectangular {
         }
     }
 
-    pub fn build(cols: i32, rows: i32, seed: u64) -> Rectangular {
+    pub fn build(cols: i32, rows: i32, seed: u64) -> Rectangular<'a> {
         let mut r = Self::new(cols, rows, seed);
         let cell = r.random_cell();
         println!("random cell={cell}");
@@ -39,7 +39,7 @@ impl Rectangular {
     }
 }
 
-fn gen_grid(cols: i32, rows: i32) -> HashMap<Point<i32>, GridCell> {
+fn gen_grid(cols: i32, rows: i32) -> HashMap<Point<i32>, GridCell<'static>> {
     let mut map = HashMap::new();
     for y in 0..rows {
         for x in 0..cols {
@@ -50,7 +50,7 @@ fn gen_grid(cols: i32, rows: i32) -> HashMap<Point<i32>, GridCell> {
     map
 }
 
-impl fmt::Display for Rectangular {
+impl<'a> fmt::Display for Rectangular<'a> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         writeln!(f, "Rectangular({} x {})", self.cols, self.rows)?;
         write!(f, "+")?;
